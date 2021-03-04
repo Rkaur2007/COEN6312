@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -230,7 +231,8 @@ public class Traveller {
 	       			case 2: t.makeBooking();
 	       					break;
 	       					
-	       			case 3: continue;
+	       			case 3: t.cancelBooking("orders.csv", TravellerName);
+	       					break;
 	       					
 					case 4: data = t.viewMyOrders("orders.csv");
 							for(int i=0;i<data.length;i++) {
@@ -296,6 +298,52 @@ public class Traveller {
 		String[] recordsArray = new String[records.size()];
 		records.toArray(recordsArray);
 		return recordsArray;
+	}
+	
+	public void cancelBooking(String filepath, String name) {
+	   	int positionOfTerm = 2;
+			int positionID = positionOfTerm - 1;
+			int positionName = positionOfTerm -2;
+			Scanner sc = new Scanner(System.in);
+			String tempFile = "temp.csv";
+			File oldFile = new File(filepath);
+			File newFile = new File(tempFile);
+			
+			String currentLine;
+			String data[];
+			
+			System.out.println("Enter the ID of the flight you want to cancel");
+			String removeTerm = sc.next();
+			
+			try {
+				FileWriter filewrite = new FileWriter(tempFile,true);
+				BufferedWriter buffwrite = new BufferedWriter(filewrite);
+				PrintWriter printwrite = new PrintWriter(buffwrite);
+				
+				FileReader fr = new FileReader(filepath);
+				BufferedReader br = new BufferedReader(fr);
+				
+				while((currentLine = br.readLine()) != null) {
+					data = currentLine.split(",");
+					if(!((data[positionName].equalsIgnoreCase(name)&&data[positionID].equalsIgnoreCase(removeTerm)))) {
+						printwrite.println(currentLine);
+					}
+				}
+				printwrite.flush();
+				printwrite.close();
+				fr.close();
+				br.close();
+				buffwrite.close();
+				filewrite.close();
+				
+				oldFile.delete();
+				File dump = new File(filepath);
+				newFile.renameTo(dump);
+				System.out.println("Your booking has been successfully cancelled!");
+			}
+			catch(Exception e) {
+				 
+			}
 	}
 		
 }
