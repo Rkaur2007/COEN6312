@@ -30,7 +30,7 @@ public class Run {
 					break;
 			case 4: traveller.signIn("people.csv");
 					break;
-			case 5: data = traveller.queryAllFlights("places.csv");
+			case 5: data = traveller.queryAllFlights("publishedFlights.csv");
 					System.out.println(data.length);
 					for(int i=0;i<data.length;i++) {
 						System.out.println(data[i]);

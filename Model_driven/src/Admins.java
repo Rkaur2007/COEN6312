@@ -1,10 +1,14 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+
+import javax.swing.JOptionPane;
 
 public class Admins {
 	String userName = " ";
@@ -87,8 +91,18 @@ public class Admins {
 			case 1 : Run.Timeout();
 					 a.createFlight();
 					 break;
-			case 2: continue;
-			case 3: continue;
+			case 2: Run.Timeout();
+					String[] data = new String[100];
+					data = a.viewAllOrders("orders.csv");
+					System.out.println(data.length);
+					for(int i=0;i<data.length;i++) {
+						System.out.println(data[i]);
+					}
+					break;
+			case 3: System.out.println("Enter the ID of the flight you want to delete");
+					String removeTerm = sc.next();
+					a.deleteFlight("publishedFlights.csv", removeTerm);
+					break;
 			case 4: Run.Timeout();
 					a.publishFlight("publishedFlights.csv");
 					break;
@@ -102,10 +116,10 @@ public class Admins {
     private static void showMenu() {
         System.out.printf("\nWelcome to the admin menu!!\n%s%s%s%s%s",
                           "0:Exit\n",
-                          "1:creat flight\n",
-                          "2:update flight\n",
-                          "3:delete flight\n",
-                          "4:publish flights\n");
+                          "1:Creat flight\n",
+                          "2:View all orders\n",
+                          "3:Delete flight\n",
+                          "4:Publish flights\n");
     }
     
     public void createFlight() {
@@ -172,5 +186,68 @@ public class Admins {
 		
 		System.out.println("Congratulations, you have published the flight" );
 
+    }
+    
+    public void deleteFlight(String filepath, String removeTerm) {
+    	int positionOfTerm = 1;
+		int position = positionOfTerm - 1;
+		String tempFile = "temp.csv";
+		File oldFile = new File(filepath);
+		File newFile = new File(tempFile);
+		
+		String currentLine;
+		String data[];
+		
+		try {
+			FileWriter filewrite = new FileWriter(tempFile,true);
+			BufferedWriter buffwrite = new BufferedWriter(filewrite);
+			PrintWriter printwrite = new PrintWriter(buffwrite);
+			
+			FileReader fr = new FileReader(filepath);
+			BufferedReader br = new BufferedReader(fr);
+			
+			while((currentLine = br.readLine()) != null) {
+				data = currentLine.split(",");
+				if(!(data[position].equalsIgnoreCase(removeTerm))) {
+					printwrite.println(currentLine);
+				}
+			}
+			printwrite.flush();
+			printwrite.close();
+			fr.close();
+			br.close();
+			buffwrite.close();
+			filewrite.close();
+			
+			oldFile.delete();
+			File dump = new File(filepath);
+			newFile.renameTo(dump);
+		}
+		catch(Exception e) {
+			 
+		}
+    	    	
+    }
+    
+    public String[] viewAllOrders(String filepath) throws IOException {
+		String path = filepath;
+		ArrayList<String> records = new ArrayList<String>();
+		String resultRow = "No flights!";
+		BufferedReader br = new BufferedReader(new FileReader(path));
+		String line;
+		while((line = br.readLine())!=null) {
+			String[] values = line.split(",");
+			if(values[0]!=null) {
+				resultRow = line;
+				records.add(resultRow);
+				
+				
+			}
+		
+		}
+		br.close();
+		String[] recordsArray = new String[records.size()];
+		records.toArray(recordsArray);
+		return recordsArray;
     }
 }

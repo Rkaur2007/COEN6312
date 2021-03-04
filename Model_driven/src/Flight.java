@@ -20,7 +20,7 @@ public class Flight {
 	enum Status {UNPUBLISHED, AVAILABLE, FULL, CANCELLED}
 	private Status flightStatus;
 	private void makeseat(int n) {
-		
+		 
 	}
 	
 	public Flight() {}

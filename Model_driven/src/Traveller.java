@@ -10,8 +10,11 @@ import java.util.GregorianCalendar;
 
 public class Traveller {
 //	public ArrayList<Booking> orders = New ArrayList<Booking>();
-	Flight flight = new Flight("","","","","","",0,0,0);
+//	Flight flight = new Flight("","","","","","",0,0,0);
+	Flight f = new Flight();
 	Date createDate = new Date();
+	public static String TravellerName;
+	public static int TravellerID;
 	
 	int travellerID = 0;
 	String name = " ";
@@ -19,14 +22,17 @@ public class Traveller {
 	boolean ifSignIn = false;
 	String seat;
 	
+	
 	public Traveller() {
 		
 	}
 	
+
+	
 	public Traveller(int travellerID, String name, String password) {
 		this.travellerID = travellerID;
 		this.name = name;
-		this.password = password;
+		this.password = password; 
 	}
 
 	public int getTravellerID() {
@@ -49,7 +55,15 @@ public class Traveller {
 	ifSignIn = b;
 	}
 	
-	public static void signUp(String filepath) throws IOException {
+	public void setTravellerID(int travellerID) {
+		this.travellerID = travellerID;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public  void signUp(String filepath) throws IOException {
 		String path = filepath;
 		FileWriter fw = new FileWriter(path, true);
 		BufferedWriter br = new BufferedWriter(fw);
@@ -59,14 +73,18 @@ public class Traveller {
 		
 		System.out.println("Enter your name");
 		String name = i.next();
+
+//		traveller.setName(name);
 		
 		System.out.println("Enter your password");
 		String password = i.next();
 		
 		int travellerID = (int)(Math.random()*90000 + 100000);
+//		traveller.setTravellerID(travellerID);
+//		t.setTravellerID(travellerID);
+//		TravellerID = t.getTravellerID();
 		
-		
-		Traveller t = new Traveller(travellerID, name, password);
+
 		
 		pw.println(name+","+password);
 		pw.flush();
@@ -78,11 +96,18 @@ public class Traveller {
 		
 	}
 	
+
+
 	public String signIn(String filepath) throws IOException{
 		Scanner sc = new Scanner(System.in);
+		Traveller t = new Traveller();
+
 		
 		System.out.println("Enter your username");
 		String searchName = sc.next();
+		t.setName(searchName);
+		TravellerName = t.getName();
+//		System.out.println(TravellerName);
 		
 		System.out.println("Enter your password");
 		String searchPassword = sc.next();
@@ -92,7 +117,7 @@ public class Traveller {
 		String line;
 		while((line = br.readLine())!=null) {
 			String[] values = line.split(",");
-			if((values[0].contentEquals(searchName))&&(values[1].contentEquals(searchPassword))) {
+			if((values[0].contentEquals(TravellerName))&&(values[1].contentEquals(searchPassword))) {
 				System.out.println("Thats the correct username and password!!!");
 				action();
 				break;
@@ -129,11 +154,6 @@ public class Traveller {
 		String path = filepath;
 		ArrayList<String> records = new ArrayList<String>();
 		String resultRow = "No flights!";
-//		Scanner sc = new Scanner(System.in);
-//		System.out.println("Enter the source"); 
-//		String source = sc.next();
-//		System.out.println("Enter the destination");
-//		String destination = sc.next();
 		BufferedReader br = new BufferedReader(new FileReader(path));
 		String line;
 		while((line = br.readLine())!=null) {
@@ -144,7 +164,7 @@ public class Traveller {
 				
 				
 			}
-//		
+		
 		}
 		br.close();
 		String[] recordsArray = new String[records.size()];
@@ -172,7 +192,7 @@ public class Traveller {
 				
 				
 			}
-//		
+		
 		}
 		br.close();
 		String[] recordsArray = new String[records.size()];
@@ -191,6 +211,7 @@ public class Traveller {
 	} 	  
 	public static void action() throws IOException {      	  
 	    int opt = 0;
+	    Traveller t = new Traveller();
 		Scanner in = new Scanner(System.in);
 		String[] data = new String[100];
 		Run.Timeout();
@@ -205,13 +226,18 @@ public class Traveller {
 	      					for(int i=0;i<data.length;i++) {
 	      						System.out.println(data[i]);
 	      					}
-	      					
 	    					break;
-	       			case 2: continue;
+	       			case 2: t.makeBooking();
+	       					break;
 	       					
 	       			case 3: continue;
 	       					
-					case 4: continue;
+					case 4: data = t.viewMyOrders("orders.csv");
+							for(int i=0;i<data.length;i++) {
+		  						System.out.println(data[i]);
+		  					}
+							break;
+							
 							
 			default : System.out.println("No such command");
 		}
@@ -219,6 +245,57 @@ public class Traveller {
 	    showMenu();
 	    opt = in.nextInt();
 	    }while (opt != 0);
+	}
+	
+	public void makeBooking() throws IOException{
+		Scanner sc = new Scanner(System.in);
+		String cardDetail;
+		System.out.println("Are you sure you want to make a booking?");
+		char response = sc.next().charAt(0);
+		if (response == 'y') {
+//			System.out.println("Enter your name\n");
+//			String name = traveller.getName();
+
+			System.out.println("Enter the ID of the flight you want to book:\n");
+			String ID = sc.next();
+			f.setFlightID(ID);
+			
+			System.out.println("Please enter your card number");
+			String number = sc.next();
+			System.out.println("Do you want to save your card details?");
+			char save = sc.next().charAt(0);
+			if(save == 'y') {
+				cardDetail = number;
+			}else {
+				cardDetail = "N/A";
+			}
+			
+			Booking booking = new Booking(TravellerName, f.getFlightID(),cardDetail);
+			
+		}
+	}
+	
+	public String[] viewMyOrders(String filepath) throws IOException {
+		String path = filepath;
+		ArrayList<String> records = new ArrayList<String>();
+		String resultRow = "No orders so far!";
+//		name = traveller.getName();
+		
+		BufferedReader br = new BufferedReader(new FileReader(path));
+		String line;
+		while((line = br.readLine())!=null) {
+			String[] values = line.split(",");
+			if((values[0].contentEquals(TravellerName))) {
+				resultRow = line;
+				records.add(resultRow);
+				
+			}
+		
+		}
+		br.close();
+		String[] recordsArray = new String[records.size()];
+		records.toArray(recordsArray);
+		return recordsArray;
 	}
 		
 }
