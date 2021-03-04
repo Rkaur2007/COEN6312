@@ -187,7 +187,7 @@ public class Traveller {
 		String line;
 		while((line = br.readLine())!=null) {
 			String[] values = line.split(",");
-			if((values[0].contentEquals(source))&&(values[1].contentEquals(destination))) {
+			if((values[3].contentEquals(source))&&(values[4].contentEquals(destination))) {
 				resultRow = line;
 				records.add(resultRow);
 				
@@ -222,7 +222,7 @@ public class Traveller {
 		do {
 			switch (opt) {
 	                case 0: continue;
-	      			case 1:	data = queryByInfo("places.csv");
+	      			case 1:	data = queryByInfo("publishedFlights.csv");
 	      					System.out.println(data.length);
 	      					for(int i=0;i<data.length;i++) {
 	      						System.out.println(data[i]);
