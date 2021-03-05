@@ -1,0 +1,10 @@
+ID,Start,End,Source,Destination,Date,Capacity,Price,Filled
+1111,12,12,Bangalore,Delhi,14,60,100,10
+2222,12,13,Delhi,Bangalore,14,60,100,10
+3333,12,14,Chennai,Bangalore,15,60,100,10
+4444,12,15,Mumbai,Delhi,15,60,100,10
+5555,12,16,Bangalore,Mumbai,16,60,100,10
+6666,12,17,Delhi,Pondy,16,60,100,10
+7777,12,18,Chennai,Pondy,17,60,100,10
+8888,12,19,Mumbai,Bangalore,17,60,100,10
+9999,12,20,Pondy,Bangalore,18,60,100,10
