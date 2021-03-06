@@ -1,13 +1,9 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
-import java.util.GregorianCalendar;
+//import java.awt.print.Flight_detail;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
 
 public class Traveller {
 //	public ArrayList<Booking> orders = New ArrayList<Booking>();
@@ -27,11 +23,8 @@ public class Traveller {
 	public Traveller() {
 		
 	}
-	
 
-	
 	public Traveller(int travellerID, String name, String password) {
-		this.travellerID = travellerID;
 		this.name = name;
 		this.password = password; 
 	}
@@ -79,25 +72,14 @@ public class Traveller {
 		
 		System.out.println("Enter your password");
 		String password = i.next();
-		
-		int travellerID = (int)(Math.random()*90000 + 100000);
-//		traveller.setTravellerID(travellerID);
-//		t.setTravellerID(travellerID);
-//		TravellerID = t.getTravellerID();
-		
-
-		
 		pw.println(name+","+password);
 		pw.flush();
 		pw.close();
-		
-		
+
 		System.out.println("Congratulations, you have signed up as a passenger!");
 		System.out.printf("Your ID is %d \n", travellerID);
 		
 	}
-	
-
 
 	public String signIn(String filepath) throws IOException{
 		Scanner sc = new Scanner(System.in);
@@ -119,10 +101,9 @@ public class Traveller {
 		while((line = br.readLine())!=null) {
 			String[] values = line.split(",");
 			if((values[0].contentEquals(TravellerName))&&(values[1].contentEquals(searchPassword))) {
-				System.out.println("Thats the correct username and password!!!");
+				System.out.println("That's the correct username and password!!!");
 				action();
 				break;
-				
 			}
 	
 		}
@@ -179,21 +160,30 @@ public class Traveller {
 		ArrayList<String> records = new ArrayList<String>();
 		String resultRow = "No such flight!";
 		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new FileReader(path));
+		int n = 1;
+		while(n==1) {
 		System.out.println("Enter the source"); 
 		String source = sc.next();
 		System.out.println("Enter the destination");
 		String destination = sc.next();
-		BufferedReader br = new BufferedReader(new FileReader(path));
+
 		String line;
-		while((line = br.readLine())!=null) {
-			String[] values = line.split(",");
-			if((values[3].contentEquals(source))&&(values[4].contentEquals(destination))) {
-				resultRow = line;
-				records.add(resultRow);
-				
-				
+
+			if (!source.equals(destination)) {
+				while ((line = br.readLine()) != null) {
+					String[] values = line.split(",");
+					if ((values[3].contentEquals(source)) && (values[4].contentEquals(destination))) {
+						resultRow = line;
+						records.add(resultRow);
+						n = 0;
+					}
+
+				}
 			}
-		
+			else{
+				System.out.println("Please try again.");
+			}
 		}
 		br.close();
 		String[] recordsArray = new String[records.size()];
@@ -223,11 +213,10 @@ public class Traveller {
 			switch (opt) {
 	                case 0: continue;
 	      			case 1:	data = queryByInfo("publishedFlights.csv");
-	      					System.out.println(data.length);
+	      					//System.out.println(data.length);
 	      					for(int i=0;i<data.length;i++) {
 	      						System.out.println(data[i]);
 	      					}
-	    					break;
 	       			case 2: t.makeBooking();
 	       					break;
 	       					
@@ -255,8 +244,6 @@ public class Traveller {
 		System.out.println("Are you sure you want to make a booking?");
 		char response = sc.next().charAt(0);
 		if (response == 'y') {
-//			System.out.println("Enter your name\n");
-//			String name = traveller.getName();
 
 			System.out.println("Enter the ID of the flight you want to book:\n");
 			String ID = sc.next();
@@ -281,7 +268,6 @@ public class Traveller {
 		String path = filepath;
 		ArrayList<String> records = new ArrayList<String>();
 		String resultRow = "No orders so far!";
-//		name = traveller.getName();
 		
 		BufferedReader br = new BufferedReader(new FileReader(path));
 		String line;
@@ -290,7 +276,6 @@ public class Traveller {
 			if((values[0].contentEquals(TravellerName))) {
 				resultRow = line;
 				records.add(resultRow);
-				
 			}
 		
 		}
@@ -345,9 +330,8 @@ public class Traveller {
 				 
 			}
 	}
-		
 }
-	
-	
+
+
 
 
