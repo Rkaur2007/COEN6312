@@ -143,16 +143,12 @@ public class Traveller {
 			if(values[0]!=null) {
 				resultRow = line;
 				records.add(resultRow);
-				
-				
 			}
-		
 		}
 		br.close();
 		String[] recordsArray = new String[records.size()];
 		records.toArray(recordsArray);
 		return recordsArray;
-		
 	}
 	
 	public static String[] queryByInfo(String filepath) throws IOException {
@@ -241,21 +237,25 @@ public class Traveller {
 	public void makeBooking() throws IOException{
 		Scanner sc = new Scanner(System.in);
 		String cardDetail;
-		System.out.println("Are you sure you want to make a booking?");
+		System.out.println("Are you sure you want to make a booking?(y\n)");
 		char response = sc.next().charAt(0);
 		if (response == 'y') {
 
 			System.out.println("Enter the ID of the flight you want to book:\n");
 			String ID = sc.next();
 			f.setFlightID(ID);
-			
-			System.out.println("Please enter your card number");
-			String number = sc.next();
+			int n = 0;
+			while (n==0)
+			{
+				System.out.println("Please enter your 16 digit card number");
+				int number = sc.next();
+				int length = (int)(Math.log10(n)+1);
 			System.out.println("Do you want to save your card details?");
 			char save = sc.next().charAt(0);
 			if(save == 'y') {
 				cardDetail = number;
-			}else {
+			}
+			else {
 				cardDetail = "N/A";
 			}
 			
