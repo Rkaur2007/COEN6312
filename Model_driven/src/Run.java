@@ -1,5 +1,5 @@
 import java.io.IOException;
-import java.util.*;
+import java.util.Scanner;
 public class Run {
 
 	public static void main(String[] args) throws IOException {
@@ -36,7 +36,6 @@ public class Run {
 						System.out.println(data[i]);
 					}
 					break;
-					
 			default: break;
 			}
 			Timeout(); 
@@ -46,13 +45,14 @@ public class Run {
 	}
 
 	private static void showMenu() {
-        System.out.printf("\nWelcome to book ticket!\n%s%s%s%s%s%s",
+        System.out.printf("\nWelcome to book ticket!\n%s%s%s%s%s%s%s",
                 "0:Exit\n",
                 "1:Sign up as Administrators\n",
                 "2:Sign up as Passengers\n",
                 "3:Sign in as Administrators\n",
                 "4:Sign in as Passengers\n", 
-                "5:Query Flight without sign in\n");	
+                "5:Query Flight without sign in\n",
+				"6:Display all flights\n");
     }
 	public static void Timeout() {
 		try {
