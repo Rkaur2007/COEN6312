@@ -58,6 +58,7 @@ public class Traveller {
 	}
 	
 	public  void signUp(String filepath) throws IOException {
+		int check = 0;
 		String path = filepath;
 		FileWriter fw = new FileWriter(path, true);
 		BufferedWriter br = new BufferedWriter(fw);
@@ -72,6 +73,20 @@ public class Traveller {
 		
 		System.out.println("Enter your password");
 		String password = i.next();
+
+		int travellerID = (int)(Math.random()*90000 + 100000);
+//		traveller.setTravellerID(travellerID);
+//		t.setTravellerID(travellerID);
+//		TravellerID = t.getTravellerID(); 
+		check = checkID(travellerID);
+		while(check==1) {
+			int temp = (int)(Math.random()*90000 + 100000);
+			travellerID = temp;
+			check = checkID(travellerID);
+		}
+		
+		pw.println(name+","+password+","+travellerID);
+
 		pw.println(name+","+password);
 		pw.flush();
 		pw.close();
@@ -329,6 +344,19 @@ public class Traveller {
 			catch(Exception e) {
 				 
 			}
+	}
+	public int checkID(int ID) throws IOException {
+		String passengerID = String.valueOf(ID);
+    	int check = 0;
+    	BufferedReader br = new BufferedReader(new FileReader("publishedFlights.csv"));
+    	String line;
+    	while((line=br.readLine())!=null) {
+    		String[] values = line.split(",");
+    		if(values[2].contentEquals(passengerID)) {
+    			check = 1;
+    		}
+    	}
+    	return check;
 	}
 }
 

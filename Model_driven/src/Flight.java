@@ -17,11 +17,12 @@ public class Flight {
 	private ArrayList<Seat> seats = new ArrayList<Seat>();
 	private ArrayList<Traveller> travellers = new ArrayList<Traveller>();
 	
-	enum Status {UNPUBLISHED, AVAILABLE, FULL, CANCELLED}
+	public enum Status {UNPUBLISHED, AVAILABLE}
 	private Status flightStatus;
 	private void makeseat(int n) {
 		 
 	}
+	
 	
 	public Flight() {}
 	
@@ -95,7 +96,7 @@ public class Flight {
 		this.filled = filled;
 	}
 	public Status getFlightStatus() {
-		return flightStatus;
+		return flightStatus;  
 	}
 	public void setFlightStatus(Status flightStatus) {
 		this.flightStatus = flightStatus;
@@ -107,5 +108,4 @@ public class Flight {
 		this.seatCapacity = seatCapacity;
 	}
 	
-
 }

@@ -16,7 +16,7 @@ public class Admins {
 	
 	Flight f = new Flight();
 	
-	
+		
 	public Admins() {}
 	
 	public static void signUp(String filepath) throws IOException{
@@ -122,10 +122,18 @@ public class Admins {
                           "4:Publish flights\n");
     }
     
-    public void createFlight() {
+    public void createFlight() throws IOException {
+    	int checker=0;
     	Scanner sc = new Scanner(System.in);
         System.out.println("Please input FlightID:");
         String flightID = sc.next();
+        checker = checkID(flightID);
+        while(checker == 1) {
+        	System.out.println("Flight with this ID already exists, give a new ID!");
+        	String temp = sc.next();
+        	flightID = temp;
+        	checker = checkID(flightID);
+        }
         f.setFlightID(flightID);
         
         System.out.println("Please input start time:");
@@ -142,6 +150,11 @@ public class Admins {
         
         System.out.println("Please input the destination:");
         String destination = sc.next();
+        if (destination.contentEquals(f.getSource())) {
+        	System.out.println("Source and destination should be different, enter a different destination!");
+        	String temp = sc.next();
+            destination = temp;
+        }
         f.setDestination(destination);
         
         System.out.println("Please input departure date:");
@@ -160,11 +173,13 @@ public class Admins {
         int filled = sc.nextInt();
         f.setFilled(filled);
         
+        f.setFlightStatus(Flight.Status.UNPUBLISHED);
+        
         Flight f1 = new Flight(flightID, startTime, arrivalTime, source, destination, departureDate, price, seatCapacity, filled);
         
     }
     
-    private void publishFlight(String filepath) throws IOException {
+    public void publishFlight(String filepath) throws IOException {
 		String path = filepath;
 		FileWriter fw = new FileWriter(path, true);
 		BufferedWriter br = new BufferedWriter(fw);
@@ -185,7 +200,8 @@ public class Admins {
 		pw.close();
 		
 		System.out.println("Congratulations, you have published the flight" );
-
+		f.setFlightStatus(Flight.Status.AVAILABLE);
+		
     }
     
     public void deleteFlight(String filepath, String removeTerm) {
@@ -249,5 +265,18 @@ public class Admins {
 		String[] recordsArray = new String[records.size()];
 		records.toArray(recordsArray);
 		return recordsArray;
+    }
+    
+    public static int checkID(String flightID ) throws IOException {
+    	int check = 0;
+    	BufferedReader br = new BufferedReader(new FileReader("publishedFlights.csv"));
+    	String line;
+    	while((line=br.readLine())!=null) {
+    		String[] values = line.split(",");
+    		if(values[0].contentEquals(flightID)) {
+    			check = 1;
+    		}
+    	}
+    	return check;
     }
 }
