@@ -42,12 +42,9 @@ public class Flight {
 			for (int j=1; j<7; j++) {
 				String s = j + "";
 				Seat seat = new Seat((char)(65+i),s);
-				seats.add(seat);
+				this.seats.add(seat);
 			}
 		}
-		
-		 
-		
 	}
 	public String getFlightID() {
 		return flightID;
