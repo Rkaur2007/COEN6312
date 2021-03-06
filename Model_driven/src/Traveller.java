@@ -260,11 +260,11 @@ public class Traveller {
 			String ID = sc.next();
 			f.setFlightID(ID);
 			int n = 0;
-			while (n==0)
-			{
+			//while (n==0)
+			//{
 				System.out.println("Please enter your 16 digit card number");
-				int number = sc.next();
-				int length = (int)(Math.log10(n)+1);
+				String number = sc.next();
+				//int length = (int)(Math.log10(n)+1);
 			System.out.println("Do you want to save your card details?");
 			char save = sc.next().charAt(0);
 			if(save == 'y') {
